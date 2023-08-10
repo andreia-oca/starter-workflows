@@ -1,0 +1,45 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# This workflow will install genezio, then run genezio deploy for your project.
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create a free genezio account at https://genez.io
+#
+# 2. Store a genezio access token in GitHub Actions secrets named `GENEZIO_TOKEN`.
+#
+# See the documentation for more details and best practices.
+# https://docs.genez.io/genezio-github-action
+
+name: Deploy project with genezio
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      # Install genezio and authenticate with the genezio access token
+      - uses: Genez-io/genezio-github-action@9bc4335eee1341ce0b03df58cd459a54f631ea6a # v1.0.1
+        with:
+          genezio-version: latest
+          token: ${{ secrets.GENEZIO_TOKEN }}
+      - name: Deploy the backend with genezio
+        working-directory: ./server
+        run: genezio deploy --backend
+      - name: Deploy the frontend with genezio
+        working-directory: ./server
+        run: genezio deploy --frontend

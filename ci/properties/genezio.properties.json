@@ -1,0 +1,6 @@
+{
+    "name": "genezio",
+    "description": "Build and deploy a project with genezio.",
+    "iconName": "genezio",
+    "categories": ["Continuous integration", "genezio"]
+}
